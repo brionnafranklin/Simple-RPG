@@ -12,6 +12,7 @@ namespace Simple_RPG
         int playerHealth = 100;
         int playerMaxHealth = 100;
         int playerDamage = 10;
+        int playerHealing = 50;
         public void Start()
         {
             //call functions
@@ -54,7 +55,7 @@ namespace Simple_RPG
             bool survived = true;
             while (playerHealth > 0 && monsterHealth > 0)
             {
-                Console.Write("What will you do? (Flee/Fight) ");
+                Console.Write("What will you do? (Flee/Fight/Heal) ");
                 action = Console.ReadLine();
                 if (action == "fight" || action == "Fight")
                 {
@@ -67,13 +68,26 @@ namespace Simple_RPG
                 else if (action == "flee" || action == "Flee")
                 {
                     //escape
-                    Console.WriteLine("Got away Safely... ");
-                    return true;
+                    survived = Flee();
+                    if (survived)
+                    {
+                        return true;
+                    }
+                    
                 }
-                
-                
+                else if (action == "heal" || action == "Heal")
+                {
+                    
+                    survived = Heal(ref monsterHealth, ref monsterDamage);
+                    if (!survived)
+                    {
+                        return false;
+                    }
+
+                }
+
             }
-            return true;
+            return survived;
         }
 
         bool Fight(ref int monsterHealth, ref int monsterDamage)
@@ -97,7 +111,7 @@ namespace Simple_RPG
             if (monsterHealth <= 0)
             {
                 //monster defeat
-                Console.WriteLine("The DOGE was defeated! RIPeroni pupperoni...");
+                Console.WriteLine("The DOGE has fainted! RIPeroni pupperoni...");
                 return true;
             }
             return true;
@@ -105,13 +119,33 @@ namespace Simple_RPG
 
         bool Flee()
         {
-
+            Console.WriteLine("Got away Safely... ");
             return true;
         }
 
-        bool Heal()
+        bool Heal(ref int monsterHealth, ref int monsterDamage)
         {
 
+            //monster attack
+            Console.WriteLine("The DOGE attacks! " + playerName + " takes " + monsterDamage + " damage! Very pain.");
+            playerHealth = playerHealth - monsterDamage;
+            Console.WriteLine(playerName + " has " + playerHealth + " health remaining. ");
+
+            if (playerHealth <= 0)
+            {
+                //player defeated
+                Console.WriteLine(playerName + " was defeated! ");
+                return false;
+            }
+
+            //player heal
+            Console.WriteLine(playerName + " Devours the souls of the innocen- I mean... heals " + playerHealing + " points");
+            playerHealth += playerHealing;
+            if (playerHealth > playerMaxHealth)
+            {
+                playerHealth = playerMaxHealth;
+            }
+            Console.WriteLine(playerName + " has " + playerHealth + " health remaining. ");
             return true;
         }
     }
