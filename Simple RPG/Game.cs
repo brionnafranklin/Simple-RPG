@@ -15,13 +15,17 @@ namespace Simple_RPG
             //call functions
             Welcome();
 
+            int monstersRemaining = 5;
+
                 //make sure player isn't dead
             bool alive = true;
 
-            alive = Encounter(130);
-            if (alive)
+            //encounter loop
+            while (alive && monstersRemaining > 0)
             {
+                Console.Write("There are " + monstersRemaining + " monsters remaining. ");
                 alive = Encounter(20);
+                monstersRemaining--;
             }
 
             //wait for input before closing
