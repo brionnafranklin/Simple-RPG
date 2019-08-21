@@ -10,6 +10,8 @@ namespace Simple_RPG
     {
         String playerName = "";
         int playerHealth = 100;
+        int playerMaxHealth = 100;
+        int playerDamage = 10;
         public void Start()
         {
             //call functions
@@ -23,8 +25,8 @@ namespace Simple_RPG
             //encounter loop
             while (alive && monstersRemaining > 0)
             {
-                Console.Write("There are " + monstersRemaining + " monsters remaining. ");
-                alive = Encounter(20);
+                Console.Write("There are " + monstersRemaining + " much DOGE. ");
+                alive = Encounter(20, 20);
                 monstersRemaining--;
             }
 
@@ -40,40 +42,76 @@ namespace Simple_RPG
             Console.WriteLine("Welcome, " + playerName + ".");
             
         }
-        bool Encounter(int monsterDamage)
+        bool Encounter(int monsterDamage, int monsterHealth)
         {
 
             //Monster encounter!
             Console.WriteLine("");
-            Console.WriteLine("There is a monster in front of you!");
+            Console.WriteLine("A wild DOGE appears!");
 
             //player input
             string action = "";
-            Console.Write("What will you do? (Flee/Fight) ");
-            action = Console.ReadLine();
-            if (action == "fight" || action == "Fight")
+            bool survived = true;
+            while (playerHealth > 0 && monsterHealth > 0)
             {
-                //monster attack
-                Console.WriteLine("The monsters attacks! " + playerName + " takes " + monsterDamage + " damage! ");
-                playerHealth = playerHealth - monsterDamage;
-                Console.WriteLine(playerName + " has " + playerHealth + " health remaining. ");
-
-                if (playerHealth <= 0)
+                Console.Write("What will you do? (Flee/Fight) ");
+                action = Console.ReadLine();
+                if (action == "fight" || action == "Fight")
                 {
-                    //player defeated
-                    Console.WriteLine(playerName + " was defeated! ");
+                    survived = Fight(ref monsterHealth, ref monsterDamage);
+                    if (!survived)
+                    {
                         return false;
+                    }
                 }
-
-                //player attack
-                Console.WriteLine(playerName + " attacks! The monster is defeated! ");
-
+                else if (action == "flee" || action == "Flee")
+                {
+                    //escape
+                    Console.WriteLine("Got away Safely... ");
+                    return true;
+                }
+                
+                
             }
-            else if (action == "flee" || action == "Flee")
+            return true;
+        }
+
+        bool Fight(ref int monsterHealth, ref int monsterDamage)
+        {
+            //monster attack
+            Console.WriteLine("The DOGE attacks! " + playerName + " takes " + monsterDamage + " damage! Very pain.");
+            playerHealth = playerHealth - monsterDamage;
+            Console.WriteLine(playerName + " has " + playerHealth + " health remaining. ");
+
+            if (playerHealth <= 0)
             {
-                //escape
-                Console.WriteLine("Got away Safely... ");
+                //player defeated
+                Console.WriteLine(playerName + " was defeated! ");
+                return false;
             }
+
+            //player attack
+            Console.WriteLine(playerName + " attacks! The DOGE takes " + playerDamage + " damage");
+            monsterHealth -= playerDamage;
+            Console.WriteLine("The DOGE has " + monsterHealth + "  health remaining. Much hurt. ");
+            if (monsterHealth <= 0)
+            {
+                //monster defeat
+                Console.WriteLine("The DOGE was defeated! RIPeroni pupperoni...");
+                return true;
+            }
+            return true;
+        }
+
+        bool Flee()
+        {
+
+            return true;
+        }
+
+        bool Heal()
+        {
+
             return true;
         }
     }
